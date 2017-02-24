@@ -79,14 +79,41 @@ def depthFirstSearch(problem):
   To get started, you might want to try some of these simple commands to
   understand the search problem that is being passed in:
   
-  print "Start:", problem.getStartState()
-  print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-  print "Start's successors:", problem.getSuccessors(problem.getStartState())
   """
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  #print "Start:", problem.getStartState()
+  #print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+  #print "Start's successors:", problem.getSuccessors(problem.getStartState())
+  stack_tree = util.Stack()
+  start_state = problem.getStartState()
+  path = [start_state]
+  if problem.isGoalState(start_state):
+    return path
+  return recursive_DFS(problem,stack_tree,start_state,path)
 
-def breadthFirstSearch(problem):
+#Recursive Version of Depth First Search
+def recursive_DFS(problem,stack,state,path):
+  if not (state):
+    return False
+  if problem.isGoalState(state):
+    return path
+  else:
+    for child_state in problem.getSuccessors(state):
+      path.append(child_state)
+      solution = recursive_DFS(problem,stack,child_state[0],path)
+      if solution:
+        return solution
+      path.pop()
+    return False 
+#This function used to help Depth First Search Push all the states
+def push_all(list_all_state,stack):
+  for state in list_all_state:
+    stack.push(state)
+  return stack
+
+  #util.raiseNotDefined()
+
+def breadthFirstSearch(problem):    
   """
   Search the shallowest nodes in the search tree first.
   [2nd Edition: p 73, 3rd Edition: p 82]
